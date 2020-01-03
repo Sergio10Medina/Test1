@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Canvas Básico</title>
+    <style>
+    #miCanvas
+    {
+        border: dotted 2px yellow;
+        background: green;
+    }
+    </style>
+    <script>
+    //Variable definition
+    var canvas;
+    var ctx;
+    var radio = 10;
+    var bolax = 50;
+    var bolay = 100;
+    var dx    = 4;
+    var dy    = 4;
+    var ancho, largo;
+    var limiteDerecha, limiteIzquierda, limiteArriba, limiteAbajo;
+    window.onload = function(){
+        canvas = document.getElementById("miCanvas");
+        if(canvas && canvas.getContext){
+            ctx = canvas.getContext("2d");
+            if(ctx){
+                ancho = canvas.width;
+                alto = canvas.height;
+                limiteDerecha = ancho - radio;
+                limiteIzquierda = radio;
+                //Calculamos los límites de arriba y abajo
+                limiteArriba = radio;
+                limiteAbajo  = alto - radio;
+                //
+                ctx.lineWidth = radio;
+                ctx.fillStyle = "red";
+                move();
+                setInterval(move, 60);
+                
+            } else {
+                alert("Error al crear tu contexto");
+            }
+        }
+    }
+
+    function move(){
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        verifica();
+        ctx.beginPath();
+        ctx.arc(bolax, bolay, radio, 0, 2*Math.PI, true);
+        ctx.fill();
+    }
+
+    function verifica(){
+        var nbolax = bolax + dx;
+        var nbolay = bolay + dy;
+        if(nbolax > limiteDerecha){
+            dx *= -1;
+            nbolax = limiteDerecha;
+        } 
+        if(nbolax < limiteIzquierda){
+            dx *= -1;
+            nbolax = limiteIzquierda;
+        }
+        //Calculamos la nueva coordenada en Y
+        if(nbolay > limiteAbajo){
+            dy *= -1;
+            nbolay = limiteAbajo;
+        }
+        if(nbolay < limiteArriba){
+            dy *= -1;
+            nbolay = limiteArriba;
+        }
+        bolax = nbolax;
+        bolay = nbolay;
+    }
+    </script>
+</head>
+<body>
+    <h1>Conceptos básicos de CANVAS</h1>
+    <canvas id="miCanvas" width="500px" height="300px">
+        Tu navegador no soporta CANVAS
+    </canvas>
+</body>
+</html>
